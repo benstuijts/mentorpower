@@ -1,0 +1,68 @@
+<div class="container">
+
+    <div class="row subject">
+        <div class="container">
+            <h1 class="subject-title">Kan ik jou helpen?</h1>
+            <h2 class="subject-subtitle">
+                De kracht van een mentor zit in de combinatie van vragen stellen en antwoorden geven.
+                <br><br>
+                <a href="mailto:<%= contact.email %>?subject=Ik heb een vraag over mentorpower" class="btn btn-default" title="Neem contact met mij op per Email">
+                    <i class="fa fa-envelope-o fa-2x"></i>
+                </a>
+                <a href="#wat-is-een-mentorschap" class="btn btn-default" title="Wat is een mentorschap?">
+                    <i class="fa fa-question-circle fa-2x"></i>
+                </a>
+                <a href="#zakelijke-gegevens-mentorpower" class="btn btn-default" title="Zakelijke gegevens Mentorpower">
+                    <i class="fa fa-map-marker fa-2x"></i>
+                </a>
+                <a href="<%= contact.linkin %>" class="btn btn-default" target="_blank" title="linkedin pagina van Ben Stuijts">
+                    <i class="fa fa-linkedin-square fa-2x"></i>
+                </a>
+                <a href="<%= contact.facebook %>" class="btn btn-default" target="_blank" title="Facebook pagina van MentorPower">
+                    <i class="fa fa-facebook-square fa-2x"></i>
+                </a>
+                <a href="<%= contact.google %>" class="btn btn-default" target="_blank" title="Google pagina van MentorPower">
+                    <i class="fa fa-google-plus-square fa-2x"></i>
+                </a>
+                <a href="<%= contact.twitter %>" class="btn btn-default" target="_blank" title="Google pagina van MentorPower">
+                    <i class="fa fa-twitter-square fa-2x"></i>
+                </a>
+            </h2>
+            
+        </div>
+        
+    </div>
+    
+    <div class="jumbotron">
+        <blockquote class="blockquote-reverse">
+            
+            <p>
+                <i class="fa fa-quote-right fa-3x"></i>
+                Is het niet heerlijk om een steuntje in de rug te krijgen bij een nieuwe baan, het verwezenlijken van een droom of bij het beantwoorden van een vraag? Een maatje, die jou kan helpen doordat hij sommige paden al bewandeld heeft. Iemand, die de energie bij jou aanwakkert om jouw doel te bereiken of samen met jou het plan maakt om die ene droom waar te maken?
+            </p>
+            <footer>Ben Stuijts</footer>
+        </blockquote>
+    </div>
+    
+    <div id="wat-is-een-mentorschap"></div>
+    <h2><i class="fa fa-question-circle fa-2x title-icon"></i> Wat is een mentorschap?</h2>
+    <p>
+        Mijn ervaring is dat veel mensen geholpen worden door het stellen van de juiste vragen EN het krijgen van antwoorden. Op sommige momenten in het leven is het bijzonder effectief om in de goede richting gewezen te worden en te kunnen bouwen op ervaringen van anderen. Een mentor is zo'n iemand, die naast de juiste vragen, juist ook antwoorden geeft om jou verder te helpen. Uiteraard bepaal jezelf uiteindelijk welk pad je gaat bewandelen. Een mentor gaat samen met jou op pad, soms als gids en soms als metgezel.
+    </p>
+    
+    <h2><i class="fa fa-lightbulb-o fa-2x title-icon"></i> Is een mentorschap iets voor jou?</h2>
+    <p>
+        Ik ben op zoek naar mensen, die ik zou kunnen helpen met de volgende stap in hun carriere, persoonlijke ontwikkeling of het realiseren van hun droom. Daarbij is het wel van belang dat mijn ervaringen aansluiten bij wat jij nodig hebt. Het is daarom belangrijk om eerst een kennismakingsgesprek te hebben, waarna wij samen bepalen om met elkaar aan de slag te gaan.
+    </p>
+    
+    <a class="btn btn-default btn-lg faa-pulse animated" href="{{ urlFor('about.mentorschap')}}">Lees verder...</a>
+    
+    <div class="btn-group pull-right">
+        <a class="btn btn-lg" href="tel:<%= contact.telephone %>"><i class="fa fa-phone-square fa-2x"></i></a>
+        <a class="btn btn-lg" href="mailto:<%= contact.email %>?subject=Ik heb een vraag over mentorpower"><i class="fa fa-envelope fa-2x"></i></a>
+    </div>
+    
+    
+    <div class="margin-bottom-50"></div>
+    
+</div>

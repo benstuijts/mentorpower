@@ -1,0 +1,45 @@
+<div id="zakelijke-gegevens-mentorpower"></div>
+<div class="row subject">
+    <div class="container">
+        <h1 class="subject-title">Zakelijke informatie MentorPower</h1>
+        <h2 class="subject-subtitle"></h2>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <ul class="list-group">
+            <li class="list-group-item">
+                <i class="fa fa-map-marker fa-3x fa-fw"></i>  
+                <%= contact.address %>
+            </li>
+            
+            <li class="list-group-item">
+                <i class="fa fa-wifi fa-3x fa-fw"></i>  
+                <a href="<%= contact.website %>" ><%= contact.website %></a>
+            </li>
+            
+            <li class="list-group-item">
+                <i class="fa fa-envelope-o fa-3x fa-fw"></i>  
+                <a href="mailto:<%= contact.email %>" >Email mij</a>
+            </li>
+            
+            <li class="list-group-item">
+                <i class="fa fa-gavel fa-3x fa-fw"></i>  
+                KvK: <%= contact.kvk %>
+            </li>
+            
+            <li class="list-group-item">
+                <i class="fa fa-university fa-3x fa-fw"></i>  
+                IBAN: <%= contact.iban %>
+            </li>
+            
+            <li class="list-group-item">
+                <i class="fa fa-money fa-3x fa-fw"></i>  
+                BTW: <%= contact.btw %>
+            </li>
+            
+        </ul>
+        
+    </div>
+</div>

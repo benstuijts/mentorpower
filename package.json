@@ -1,0 +1,29 @@
+{
+  "name": "mentorpower",
+  "version": "3.0.0",
+  "description": "De kracht van een mentor zit in de combinatie van vragen stellen en antwoorden geven",
+  "main": "server.js",
+  "scripts": {
+    "start": "clear && nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/benstuijts/mentorpower.git"
+  },
+  "keywords": [
+    "mentor",
+    "mentorschap",
+    "ben",
+    "stuijts"
+  ],
+  "author": "Ben Stuijts 2016",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/benstuijts/mentorpower/issues"
+  },
+  "homepage": "https://github.com/benstuijts/mentorpower#readme",
+  "dependencies": {
+    "ejs": "^2.4.1",
+    "express": "^4.13.4"
+  }
+}
