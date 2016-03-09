@@ -41,4 +41,32 @@ router.get('/', function(req, res) {
   });
 });
 
+router.get('/mentorschap-wat-is-het', function(req, res){
+    res.render('./paginas/mentorschap-wat-is-het',{
+      title: 'mentorschap wat is het?',
+      description: '',
+      keywords: '',
+      breadcrumbs: [
+          { name: 'home', url: '/'}, 
+          { name: 'mentorschap', url: '/mentorschap-wat-is-het'}
+        ]
+  });
+});
+
+router.get('/teambuilding', function(req, res){
+    res.send('teambuilding');
+});
+
+router.get('/brainstormen', function(req, res){
+    res.send('brainstormen');
+});
+
+router.get('/beleid-maken', function(req, res){
+    res.send('beleid maken');
+});
+
+router.get('/suzan-de-jong', function(req, res){
+    res.send('Suzan de Jong');
+});
+
 module.exports = router;
