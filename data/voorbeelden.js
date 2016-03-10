@@ -28,6 +28,14 @@ module.exports = [
         tags: []
     },
     
+    {
+        naam: "Dominique Aarts",
+        pasfoto: "https://scontent-fra3-1.xx.fbcdn.net/hphotos-frc1/l/t31.0-8/10013439_232285590305694_1021998752_o.jpg",
+        header: "Ik wil spelen in het Nederlands Hockey Elftal U18.",
+        introductie: "Dominique heb ik leren kennen toen ik de trainer / coach van jongens A1 was bij Push in Breda. Hij was toen al enorm talentvol en gedreven, maar het lukte hem nog niet om voor de vertegenwoordige elftallen te spelen. Wij hebben toen een plan gemaakt met als doel om nu wel geselecteerd te gaan worden...",
+        slug: "dominique-aarts",
+        tags: []
+    },
     
 ];
 

@@ -109,6 +109,24 @@ router.get('/carin-den-heijer', function(req, res){
     });
 });
 
+router.get('/pagina/familie-aarts', function(req, res){
+    res.redirect('dominique-aarts');
+});
+
+
+router.get('/dominique-aarts', function(req, res){
+    res.render('./paginas/dominique-aarts',{
+      title: 'Dominique Aarts',
+      description: 'Ik wil spelen in het Nederlands Elftal U18.',
+      keywords: 'sport, hockey, nederlands elftal',
+      breadcrumbs: [
+          { name: 'home', url: '/'}, 
+          { name: 'verhalen', url: '/verhalen'},
+          { name: 'Dominique Aarts', url: '/dominique-aarts'}
+        ]
+    });
+});
+
 router.get('/therese-van-wassenaar', function(req, res){
     res.redirect('konnekt-buurtnetwerk');
 });
