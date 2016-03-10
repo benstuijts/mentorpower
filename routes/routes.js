@@ -1,7 +1,7 @@
 var express     = require('express');
 var router      = express.Router();
 var url         = require('url');
-
+var voorbeelden = require('../data/voorbeelden');
 
 router.use(function (req, res, next) {
 
@@ -31,6 +31,7 @@ router.use(function (req, res, next) {
      urlFor: function(url) {
          return '/' + url
      },
+     voorbeelden: voorbeelden,
    };
    next();
 });
@@ -45,7 +46,7 @@ router.get('/', function(req, res) {
       breadcrumbs: [
           { name: 'home', url: '/'}, 
           { name: 'ben stuijts', url: '/'}
-        ]
+        ],
   });
 });
 
@@ -71,6 +72,10 @@ router.get('/brainstormen', function(req, res){
 
 router.get('/beleid-maken', function(req, res){
     res.send('beleid maken');
+});
+
+router.get('/susan-de-jong', function(req, res){
+    res.redirect('suzan-de-jong');
 });
 
 router.get('/suzan-de-jong', function(req, res){
@@ -100,6 +105,27 @@ router.get('/carin-den-heijer', function(req, res){
           { name: 'home', url: '/'}, 
           { name: 'verhalen', url: '/verhalen'},
           { name: 'Carin den Heijer', url: '/carin-den-heijer'}
+        ]
+    });
+});
+
+router.get('/therese-van-wassenaar', function(req, res){
+    res.redirect('konnekt-buurtnetwerk');
+});
+
+router.get('/pagina/konnekt', function(req, res){
+    res.redirect('konnekt-buurtnetwerk');
+});
+
+router.get('/konnekt-buurtnetwerk', function(req, res){
+    res.render('./paginas/konnekt-buurtnetwerk',{
+      title: 'Konnekt Buurtnetwerk',
+      description: 'Burgerinitiatief: Het opzetten van een eigen stichting, plus het leidinggeven aan de organisatie en vrijwilligers.',
+      keywords: 'konnekt, buurtnetwerk, droom',
+      breadcrumbs: [
+          { name: 'home', url: '/'}, 
+          { name: 'verhalen', url: '/verhalen'},
+          { name: 'Konnekt Buurtnetwerk', url: '/konnekt-buurtnetwerk'}
         ]
     });
 });
