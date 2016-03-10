@@ -41,11 +41,10 @@ router.get('/home', function(req, res){ res.redirect('/')});
 router.get('/', function(req, res) {
   res.render('landingspage',{
       title: 'home',
-      description: '',
-      keywords: '',
+      description: 'MentorPower is de kunst van het vragen stellen en antwoorden geven.',
+      keywords: 'mentorpower, mentor, mentoring',
       breadcrumbs: [
           { name: 'home', url: '/'}, 
-          { name: 'ben stuijts', url: '/'}
         ],
   });
 });
@@ -87,6 +86,23 @@ router.get('/suzan-de-jong', function(req, res){
           { name: 'home', url: '/'}, 
           { name: 'verhalen', url: '/verhalen'},
           { name: 'Suzan de Jong', url: '/suzan-de-jong'}
+        ]
+    });
+});
+
+router.get('/pagina/ben-stuijts', function(req, res){
+    res.redirect('ben-stuijts');
+});
+
+
+router.get('/ben-stuijts', function(req, res){
+    res.render('./paginas/ben-stuijts',{
+      title: 'Ben Stuijts',
+      description: 'Kan ik jou helpen?',
+      keywords: 'mentor, Ben Stuijts',
+      breadcrumbs: [
+          { name: 'home', url: '/'}, 
+          { name: 'Ben Stuijts', url: '/ben-stuijts'},
         ]
     });
 });
