@@ -1,8 +1,8 @@
 var plan = require('flightplan');
 
-var appName = 'node-app';
+var appName = 'mentorpower';
 var username = 'deploy';
-var startFile = 'bin/www';
+var startFile = 'var/www/mentorpower';
 
 var tmpDir = appName+'-' + new Date().getTime();
 
