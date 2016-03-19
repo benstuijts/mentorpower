@@ -1,15 +1,15 @@
 var plan = require('flightplan');
 
 var appName = 'mentorpower';
-var username = 'deploy';
-var startFile = 'var/www/mentorpower';
+var username = 'root';
+var startFile = 'server.js';
 
 var tmpDir = appName+'-' + new Date().getTime();
 
 // configuration
 plan.target('staging', [
   {
-    host: '104.131.93.214',
+    host: '185.14.186.70',
     username: username,
     agent: process.env.SSH_AUTH_SOCK
   }
@@ -17,7 +17,7 @@ plan.target('staging', [
 
 plan.target('production', [
   {
-    host: '104.131.93.215',
+    host: '185.14.186.70',
     username: username,
     agent: process.env.SSH_AUTH_SOCK
   },
