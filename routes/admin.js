@@ -4,6 +4,7 @@ const bodyParser    = require('body-parser');
 const session       = require('express-session');
 const config        = require('../config');
 const mongoose      = require('mongoose');
+const Article       = require('../models/Article');
 
 const administrator = { 
     token: randomString(32),
@@ -25,8 +26,6 @@ router.use(session({
         resave: false,
         saveUninitialized: true,
 }));
-
-console.log (config.author);
 
 var isLoggedIn = function(req, res, next) {
         if(!req.session.login) {
@@ -68,6 +67,29 @@ const dashboard = function(res, message, action) {
     switch(action) {
         case 'CREATE_ARTICLE':
         break;
+        case 'ALL_ARTICLES':
+            Article.find({}, function(err, articles){
+                if(err) {
+                    
+                } else {
+                   res.render('./admin/dashboard',{
+                        title: 'Administration Area Dashboard',
+                        description: 'Administration Area Dashboard',
+                        keywords: '',
+                        author: '',
+                        breadcrumbs: [
+                            { name: 'login', url: '/'}, 
+                            { name: 'dashboard', url: '/dashboard'},
+                        ],
+                        token: administrator.token,
+                        message: message,
+                        action: action,
+                        articles: articles
+                    }); 
+                }
+            });
+            return;
+        break;
     }
     res.render('./admin/dashboard',{
         title: 'Administration Area Dashboard',
@@ -80,7 +102,8 @@ const dashboard = function(res, message, action) {
         ],
         token: administrator.token,
         message: message,
-        action: action
+        action: action,
+        articles: null
     });
 }
 
@@ -124,7 +147,8 @@ router.post('/dashboard', isLoggedIn, function(req,res){
     }
     console.log(req.body);
     var title = req.body.title, subtitle = req.body.subtitle, slug = req.body.slug,
-        tags = req.body.tags, author = req.body.author || config.author, image = req.body.image;
+        tags = req.body.tags, author = req.body.author || config.author, 
+        image = req.body.image, body = req.body.body;
     if(title == '') {
         message.body = 'A new Article must have a title!';
         dashboard(res, message, req.body.action);
@@ -134,7 +158,27 @@ router.post('/dashboard', isLoggedIn, function(req,res){
         dashboard(res, message, req.body.action);
     }
     // article opslaan...
-     
+    var article = new Article();
+        article.title = title;
+        article.subtitle = subtitle;
+        article.slug = slug;
+        article.tags = tags;
+        article.author = author;
+        article.image = image;
+        article.body = body;
+        article.views = 0;
+        article.published = false;
+    article.save(function(err){
+        if(err) {
+            message.body = 'There was a problem saving the article in de database.';
+            dashboard(res, message, req.body.action);
+        } else {
+            message.type = 'success';
+            message.body = 'Article was saved in the database';
+            message.icon = 'check-square-o';
+            dashboard(res, message, 'ALL_ARTICLES');
+        }
+    });
 });
 
 router.get('/logout', function(req, res){

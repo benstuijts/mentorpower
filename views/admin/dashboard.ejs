@@ -22,6 +22,11 @@
             </div>
         <% } %>
         
+        <% if(action == 'ALL_ARTICLES') { %>
+            <% include all_articles %>
+        <% } %>
+        
+        
         <% if(action == 'CREATE_ARTICLE') { %>
             <% include create_article %>
         <% } %>

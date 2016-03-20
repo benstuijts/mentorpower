@@ -1,0 +1,41 @@
+<div class="container-fluid">
+    <h2>All Articles</h2>
+    <table class="table table-hover">
+        <tr>
+            <th>title</th>
+            <th>subtitle</th>
+            <th>slug</th>
+            <th>tags</th>
+            <th>image</th>
+            <th>views</th>
+            <th>options</th>
+        </tr>
+    <% for(var i=0; i<articles.length; i++) { %>
+        <tr>
+            <td>
+                <%= articles[i].title %>
+                <br>
+                <% if(!articles[i].published) { %>
+                    <b class="text-danger">(not published yet...)</b>
+                <% } %>
+            </td>
+            <td><%= articles[i].subtitle %></td>
+            <td><%= articles[i].slug %></td>
+            <td><%= articles[i].tags %></td>
+            <td><img width="128" src="https://media.licdn.com/mpr/mpr/jc/AAEAAQAAAAAAAAT2AAAAJGM2N2Y2NmU1LTdhODgtNGViNy1iZTQ3LTQzYmFlMTFhMGQzZQ.jpg" class="img-thumbnail"></td>
+            <td><%= articles[i].views %></td>
+            <td>
+                <a title="edit" class="btn btn-primary" href=""><i class="fa fa-pencil-square-o"></i></a>
+                <% if(articles[i].published) { %>
+                    <a title="mute" class="btn btn-default" href=""><i class="fa fa-microphone-slash"></i></a>
+                <% } else { %>
+                    <a title="publish" class="btn btn-success" href=""><i class="fa fa-microphone"></i></a>
+                <% } %>
+                
+                
+                <a title="delete" class="btn btn-warning" href=""><i class="fa fa-trash-o"></i></a>
+            </td>
+        </tr>
+    <% } %>
+    </table>
+</div>
