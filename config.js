@@ -15,5 +15,7 @@ module.exports = {
         btw: "NL196390400B01",
         bic: ""
      },
-    
+    database: {
+        url: "mongodb://188.166.89.80/mentorpower"
+    }
 }
