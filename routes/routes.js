@@ -164,17 +164,24 @@ router.get('/konnekt-buurtnetwerk', function(req, res){
     });
 });
 
-router.get('/ben-stuijts', function(req, res){
-    res.send('Ben Stuijts');
-});
-
-router.get('/ben-stuijts', function(req, res){
-    res.send('Ben Stuijts');
+router.get('/voorbeelden', function(req, res){
+    res.redirect('verhalen');
 });
 
 router.get('/verhalen', function(req, res){
-    res.send('Verhalen');
+    res.render('./paginas/verhalen',{
+      title: 'Verhalen en voorbeelden',
+      description: 'Laat je inspireren door anderen.',
+      keywords: 'verhalen, voorbeelden, mentorschap',
+      breadcrumbs: [
+          { name: 'home', url: '/'}, 
+          { name: 'verhalen', url: '/verhalen'},
+        ]
+    });
 });
+
+
+
 
 router.get('/artikelen', function(req, res){
     res.send('Artikelen');

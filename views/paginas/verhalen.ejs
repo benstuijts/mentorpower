@@ -1,0 +1,45 @@
+<% include ../partials/header %>
+
+<body>
+    <% include ../partials/navigation %>
+    
+    
+<div class="row subject">
+    <div class="container">
+        <h1 class="subject-title">Verhalen en voorbeelden van mentorschap</h1>
+        <h2 class="subject-subtitle">
+            Laat je inspireren door anderen.
+            <hr>
+            <a href="<%= urlFor('home') %>" class="btn btn-default" title="Homepage">
+                <i class="fa fa-home fa-2x"></i>
+            </a>
+            <a href="mailto:<%= contact.email %>?subject=Ik heb een vraag over mentorpower" class="btn btn-default" title="Neem contact met mij op per Email">
+                <i class="fa fa-envelope-o fa-2x"></i>
+            </a>
+            <a href="<%= contact.linkin %>" class="btn btn-default" target="_blank" title="linkedin pagina van Ben Stuijts">
+                <i class="fa fa-linkedin-square fa-2x"></i>
+            </a>
+            <a href="<%= contact.facebook %>" class="btn btn-default" target="_blank" title="Facebook pagina van MentorPower">
+                <i class="fa fa-facebook-square fa-2x"></i>
+            </a>
+            <a href="<%= contact.google %>" class="btn btn-default" target="_blank" title="Google pagina van MentorPower">
+                <i class="fa fa-google-plus-square fa-2x"></i>
+            </a>
+            <a href="<%= contact.twitter %>" class="btn btn-default" target="_blank" title="Google pagina van MentorPower">
+                <i class="fa fa-twitter-square fa-2x"></i>
+            </a>
+        </h2>
+    </div>
+        
+</div>
+
+<div class="container">
+    <% include ../partials/breadcrumbs %>
+</div>
+
+<% include ../content/voorbeelden %>
+
+<% include ../content/mentorpower-zakelijk %>
+
+</body>
+</html>
