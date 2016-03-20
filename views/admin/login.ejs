@@ -1,0 +1,49 @@
+<% include ../partials/header %>
+
+<body>
+    
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-10 col-xs-offset-1 col-md-8 col-md-offset-2 alert alert-info">
+                <h1><i class="fa fa-lock"></i> Login</h1>
+                <hr>
+                <form method="post" action="/admin">
+                    <div class="form-group">
+                        <label for="username"><i class="fa fa-user"></i> Username</label>
+                        <input class="form-control" type="text" id="username" name="username">
+                    </div>
+                    <div class="form-group">
+                        <label for="password"><i class="fa fa-key"></i> Password</label>
+                        <input class="form-control" type="password" id="password" name="password">
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-default">login</button>
+                    </div>
+                    <input type="hidden" name="token" value="<%= token %>">
+                </form>
+            </div>
+        </div>
+        
+        <% if(message) { %>
+            <div class="row">
+                <div class="col-xs-10 col-xs-offset-1 col-md-8 col-md-offset-2 alert alert-<%= message.type %>">
+                    <i class="fa fa-<%= message.icon %>"></i> <%= message.body %>
+                </div>
+            </div>
+            
+        <% } %>
+        
+        <div class="row">
+            <div class="col-xs-10 col-xs-offset-1 col-md-8 col-md-offset-2">
+                <a href="<%= baseUrl %>">Back to <%= baseUrl %></a>
+            </div>
+        </div>
+        
+        
+        
+    </div>
+    
+    
+    
+</body>
+</html>
