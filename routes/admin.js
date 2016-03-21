@@ -63,35 +63,8 @@ const login_form = function(res, message) {
     });
 }
 
-const dashboard = function(res, message, action) {
-    switch(action) {
-        case 'CREATE_ARTICLE':
-        break;
-        case 'ALL_ARTICLES':
-            Article.find({}, function(err, articles){
-                if(err) {
-                    
-                } else {
-                   res.render('./admin/dashboard',{
-                        title: 'Administration Area Dashboard',
-                        description: 'Administration Area Dashboard',
-                        keywords: '',
-                        author: '',
-                        breadcrumbs: [
-                            { name: 'login', url: '/'}, 
-                            { name: 'dashboard', url: '/dashboard'},
-                        ],
-                        token: administrator.token,
-                        message: message,
-                        action: action,
-                        articles: articles
-                    }); 
-                }
-            });
-            return;
-        break;
-    }
-    res.render('./admin/dashboard',{
+const dashboard = function(res, message, extraOptions) {
+    var options = {
         title: 'Administration Area Dashboard',
         description: 'Administration Area Dashboard',
         keywords: '',
@@ -102,9 +75,13 @@ const dashboard = function(res, message, action) {
         ],
         token: administrator.token,
         message: message,
-        action: action,
-        articles: null
-    });
+        action: null
+    }
+    for(var opt in extraOptions) {
+        options[opt] = extraOptions[opt];
+    }
+    
+    res.render('./admin/dashboard',options)
 }
 
 router.get('/', function(req, res){
@@ -134,9 +111,25 @@ router.post('/', function(req, res){
 });
 
 router.get('/dashboard', isLoggedIn, function(req, res){
-    // get querystring
     var action = req.query.action;
-    dashboard(res, null, action);
+    switch(action) {
+        case "ALL_ARTICLES":
+            Article.find({}, function(err, articles){
+                if(err) {
+                    dashboard(res, {type: 'warning', body: 'Error getting all articles from database.', icon: 'exclamation-triangle'}, {action: null });
+                    return;
+                    
+                }  else {
+                    dashboard(res, null, {action: action, articles: articles});
+                    return;
+                }
+            });
+        break;
+        
+        default: 
+            dashboard(res, null, {action: action});
+        break;
+    }
 });
 
 router.post('/dashboard', isLoggedIn, function(req,res){
