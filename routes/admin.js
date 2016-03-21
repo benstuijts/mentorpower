@@ -62,7 +62,6 @@ const login_form = function(res, message) {
         message: message
     });
 }
-
 const dashboard = function(res, message, extraOptions) {
     var options = {
         title: 'Administration Area Dashboard',
@@ -76,13 +75,24 @@ const dashboard = function(res, message, extraOptions) {
         token: administrator.token,
         message: message,
         action: null
-    }
+    };
     for(var opt in extraOptions) {
         options[opt] = extraOptions[opt];
     }
     
-    res.render('./admin/dashboard',options)
-}
+    Article.find({}, function(err, articles){
+        if(err) {
+            options.message = {type: 'warning', body: 'Error getting all articles from database.', icon: 'exclamation-triangle' };
+        } else {
+            options.articles = articles;
+        }
+        res.render('./admin/dashboard',options);
+    });
+    
+    
+    
+    
+};
 
 router.get('/', function(req, res){
     login_form(res, null);
@@ -111,32 +121,91 @@ router.post('/', function(req, res){
 });
 
 router.get('/dashboard', isLoggedIn, function(req, res){
-    var action = req.query.action;
+    if(req.query.action) {
+        console.log('Er is een query string met action meegeven');
+    }
+    var action = req.query.action || 'ALL_ARTICLES';
+    
+    
+    
     switch(action) {
-        case "ALL_ARTICLES":
+        
+        case 'NONE':
+        case 'ALL_ARTICLES':
+            dashboard(res, null, {action: 'ALL_ARTICLES'});
+            /*
+            console.log('Routing ' + action );
             Article.find({}, function(err, articles){
                 if(err) {
+                    console.log('error, finding articles');
                     dashboard(res, {type: 'warning', body: 'Error getting all articles from database.', icon: 'exclamation-triangle'}, {action: null });
                     return;
                     
                 }  else {
-                    dashboard(res, null, {action: action, articles: articles});
+                    console.log('articles found: ' + articles.length);
+                    dashboard(res, null, {action: 'ALL_ARTICLES', articles: articles});
                     return;
+                }
+            });
+            */
+        break;
+        
+        case 'NEW_ARTICLE':
+            dashboard(res, null, {action: 'NEW_ARTICLE'});
+        break;
+        
+        case 'PUBLISH_ARTICLE':
+            var cb = function() {dashboard(res, {type: 'success', body: 'Article successfully published.', icon: 'check-square-o'}, {action:"ALL_ARTICLES"})};
+            Article.findOne({_id: req.query.id}, {}, function(err, art){
+                if(err) {
+                    
+                } else {
+                    art.published = true;
+                    art.save();
+                    cb();
                 }
             });
         break;
         
-        default: 
+        case 'MUTE_ARTICLE':
+            var cb = function() {dashboard(res, {type: 'success', body: 'Article successfully muted.', icon: 'check-square-o'}, {action:"ALL_ARTICLES"})};
+            Article.findOne({_id: req.query.id}, {}, function(err, art){
+                if(err) {
+                    
+                } else {
+                    art.published = false;
+                    art.save();
+                    cb();
+                }
+            });
+        break;
+        
+        case 'DELETE_ARTICLE':
+            console.log('deleting article');
+            Article.remove({_id: req.query.id}, function(err){
+                if(err) {
+                    dashboard(res, {type: 'warning', body: 'Error deleting article from database.', icon: 'exclamation-triangle'});
+                } else {
+                    dashboard(res, {type: 'success', body: 'Article deleted successfully from database.', icon: 'check-square-o'});
+                }
+            });
+        break
+        
+        default:
+        console.log('default routing');
             dashboard(res, null, {action: action});
         break;
+
     }
+
 });
 
 router.post('/dashboard', isLoggedIn, function(req,res){
     var message = { type: 'warning', body: null, icon: 'exclamation-triangle'};
     if(req.body.token !== administrator.token) {
         message.body = 'Token error';
-        dashboard(res, message, req.body.action);
+        dashboard(res, message);
+        return;
     }
     console.log(req.body);
     var title = req.body.title, subtitle = req.body.subtitle, slug = req.body.slug,
@@ -144,12 +213,20 @@ router.post('/dashboard', isLoggedIn, function(req,res){
         image = req.body.image, body = req.body.body;
     if(title == '') {
         message.body = 'A new Article must have a title!';
-        dashboard(res, message, req.body.action);
+        dashboard(res, message);
+        return;
     }
     if(slug == '') {
         message.body = 'A new Article must have a slug!';
-        dashboard(res, message, req.body.action);
+        dashboard(res, message);
+        return;
     }
+    
+    // action controleren
+    if(req.body.action !== 'CREATE_ARTICLE') {
+        return;
+    }
+    
     // article opslaan...
     var article = new Article();
         article.title = title;
@@ -164,12 +241,12 @@ router.post('/dashboard', isLoggedIn, function(req,res){
     article.save(function(err){
         if(err) {
             message.body = 'There was a problem saving the article in de database.';
-            dashboard(res, message, req.body.action);
+            dashboard(res, message, {action: req.body.action});
         } else {
             message.type = 'success';
             message.body = 'Article was saved in the database';
             message.icon = 'check-square-o';
-            dashboard(res, message, 'ALL_ARTICLES');
+            dashboard(res, message);
         }
     });
 });

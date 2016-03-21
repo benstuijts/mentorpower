@@ -18,6 +18,15 @@ articleSchema.methods.generateHash = function(password) {
     return;
 };
 
+articleSchema.methods.publish = function(cb) {
+    
+    this.update({_id: this.id}, {$set: { 'published' : true }});
+    cb();
+};
+articleSchema.methods.mute = function() {
+    this.published = false;
+};
+
 module.exports = mongoose.model('Article', articleSchema);
 
 /* Utility functions */
