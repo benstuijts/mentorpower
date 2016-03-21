@@ -154,6 +154,27 @@ router.get('/dashboard', isLoggedIn, function(req, res){
             dashboard(res, null, {action: 'NEW_ARTICLE'});
         break;
         
+        case 'EDIT_ARTICLE':
+            Article.findOne({_id: req.query.id}, function(err, article){
+                if(err) {
+                    
+                } else {
+                    dashboard(res, null, {
+                        _id: article._id,
+                        title: article.title,
+                        subtitle: article.subtitle,
+                        slug: article.slug,
+                        tags: article.tags,
+                        author: article.author,
+                        image: article.image,
+                        body: article.body,
+                        action: 'EDIT_ARTICLE'
+                    });
+                }
+            });
+            
+        break;
+        
         case 'PUBLISH_ARTICLE':
             var cb = function() {dashboard(res, {type: 'success', body: 'Article successfully published.', icon: 'check-square-o'}, {action:"ALL_ARTICLES"})};
             Article.findOne({_id: req.query.id}, {}, function(err, art){
@@ -222,33 +243,57 @@ router.post('/dashboard', isLoggedIn, function(req,res){
         return;
     }
     
-    // action controleren
-    if(req.body.action !== 'CREATE_ARTICLE') {
-        return;
-    }
+    
     
     // article opslaan...
-    var article = new Article();
-        article.title = title;
-        article.subtitle = subtitle;
-        article.slug = slug;
-        article.tags = tags;
-        article.author = author;
-        article.image = image;
-        article.body = body;
-        article.views = 0;
-        article.published = false;
-    article.save(function(err){
-        if(err) {
-            message.body = 'There was a problem saving the article in de database.';
-            dashboard(res, message, {action: req.body.action});
-        } else {
-            message.type = 'success';
-            message.body = 'Article was saved in the database';
-            message.icon = 'check-square-o';
-            dashboard(res, message);
-        }
-    });
+    
+    if(req.body.action === 'CREATE_ARTICLE') {
+        var article = new Article();
+            article.title = title;
+            article.subtitle = subtitle;
+            article.slug = slug;
+            article.tags = tags;
+            article.author = author;
+            article.image = image;
+            article.body = body;
+            article.views = 0;
+            article.published = false;
+        article.save(function(err){
+            if(err) {
+                message.body = 'There was a problem saving the article in de database.';
+                dashboard(res, message, {action: req.body.action});
+            } else {
+                message.type = 'success';
+                message.body = 'Article was saved in the database';
+                message.icon = 'check-square-o';
+                dashboard(res, message);
+            }
+        });
+    }
+    
+    if(req.body.action === 'EDIT_ARTICLE') {
+        Article.update({_id: req.body.id}, {
+            title: req.body.title,
+            subtitle: req.body.subtitle,
+            slug: req.body.slug,
+            tags: req.body.tags,
+            author: req.body.author,
+            image: req.body.image,
+            body: req.body.body
+        }, function(err){
+            if(err) {
+                
+            } else {
+                message.type = 'success';
+                message.body = 'Article was saved in the database';
+                message.icon = 'check-square-o';
+                dashboard(res, message, {action:"ALL_ARTICLES"});
+            }
+        });
+    }
+    
+    
+    
 });
 
 router.get('/logout', function(req, res){
