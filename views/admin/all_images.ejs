@@ -1,0 +1,28 @@
+<div class="container-fluid">
+    <h2>All Images</h2>
+    <table class="table table-hover">
+        <tr>
+            <th>title</th>
+            <th>description</th>
+            <th>slug</th>
+            <th>alt</th>
+            <th>image</th>
+            <th>options</th>
+        </tr>
+    <% for(var i=0; i<images.length; i++) { %>
+        <tr>
+            <td>
+                <%= images[i].title %>
+            </td>
+            <td><%= images[i].description %></td>
+            <td><%= images[i].filename %></td>
+            <td><%= images[i].alt %></td>
+            <td><img width="128" title="<%=images[i].image%>" src="<%= images[i].filename %>" class="img-thumbnail"></td>
+            <td>
+                <a title="edit" class="btn btn-primary" href="?action=EDIT_IMAGE&id=<%= images[i]._id %>"><i class="fa fa-pencil-square-o"></i></a>
+                <a title="delete" class="btn btn-warning" href="?action=DELETE_IMAGE&id=<%= images[i]._id %>"><i class="fa fa-trash-o"></i></a>
+            </td>
+        </tr>
+    <% } %>
+    </table>
+</div>

@@ -1,5 +1,8 @@
 <div class="container-fluid">
+    <a href="<%= baseUrl %>/admin/imagelist" class="btn btn-default" target="_blank"><i class="fa fa-picture-o"></i> Open Image List</a>
+    
     <h2>Create Article</h2>
+    
     <form method="post" action="<%=baseUrl %>/admin/dashboard">
         <% create_form_field('title', 'Title') %>
         <% create_form_field('subtitle', 'Subtitle') %>

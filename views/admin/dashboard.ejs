@@ -11,7 +11,9 @@
         <div class="row">
             <a href="?action=ALL_ARTICLES" class="btn btn-default"><i class="fa fa-home"></i> All articles</a>
             <a href="?action=CREATE_ARTICLE" class="btn btn-success"><i class="fa fa-file-text-o"></i> Create new article</a>
-            <a href="" class="btn btn-default"><i class="fa fa-picture-o"></i> Upload image</a>
+            <a href="<%= baseUrl %>/admin/images" class="btn btn-default" target="_blank"><i class="fa fa-picture-o"></i> Images</a>
+            <a href="<%= baseUrl %>/admin/imagelist" class="btn btn-default" target="_blank"><i class="fa fa-picture-o"></i> Image List</a>
+        
         </div>
         
         <% if(message) { %>
@@ -20,6 +22,10 @@
                     <i class="fa fa-<%= message.icon %>"></i> <%= message.body %>
                 </div>
             </div>
+        <% } %>
+        
+        <% if(action == 'UPLOAD_IMAGE') { %>
+            <% include upload_image %>
         <% } %>
         
         <% if(action == 'ALL_ARTICLES') { %>
