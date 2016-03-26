@@ -22,7 +22,7 @@
             <td><%= articles[i].subtitle %></td>
             <td><%= articles[i].slug %></td>
             <td><%= articles[i].tags %></td>
-            <td><img width="128" title="<%=articles[i].image%>" src="https://media.licdn.com/mpr/mpr/jc/AAEAAQAAAAAAAAT2AAAAJGM2N2Y2NmU1LTdhODgtNGViNy1iZTQ3LTQzYmFlMTFhMGQzZQ.jpg" class="img-thumbnail"></td>
+            <td><img width="128" title="<%=articles[i].image%>" src="<%=articles[i].image%>" class="img-thumbnail"></td>
             <td><%= articles[i].views %></td>
             <td>
                 <a title="edit" class="btn btn-primary" href="?action=EDIT_ARTICLE&id=<%= articles[i]._id %>"><i class="fa fa-pencil-square-o"></i></a>

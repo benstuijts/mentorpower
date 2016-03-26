@@ -10,7 +10,7 @@
     <% for(var i=0; i<images.length; i++) { %>
     <div class="media">
         <div class="media-left">
-            <a href="#">
+            <a href="<%= images[i].filename %>" target="_blank">
                 <img style="width: 48px" class="media-object" title="<%=images[i].image%>" src="<%= images[i].filename %>">
             </a>
         </div>

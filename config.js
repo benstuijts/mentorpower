@@ -17,5 +17,9 @@ module.exports = {
      },
     database: {
         url: "mongodb://188.166.89.80/mentorpower"
+    },
+    administrator: {
+        username: 'bens',
+        password: '14303963'
     }
-}
+};

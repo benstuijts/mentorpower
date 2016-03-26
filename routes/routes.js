@@ -4,7 +4,7 @@ var url         = require('url');
 var voorbeelden = require('../data/voorbeelden');
 var config      = require('../config.js');
 
-console.log(config);
+
 
 router.use(function (req, res, next) {
 
