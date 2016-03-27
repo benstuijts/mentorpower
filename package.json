@@ -4,7 +4,7 @@
   "description": "De kracht van een mentor zit in de combinatie van vragen stellen en antwoorden geven",
   "main": "server.js",
   "scripts": {
-    "start": "clear && nodemon server.js"
+    "start": "clear && nodemon server.js --ignore './availableUrls.json'"
   },
   "repository": {
     "type": "git",
@@ -28,6 +28,7 @@
     "ejs": "^2.4.1",
     "express": "^4.13.4",
     "express-session": "^1.13.0",
+    "jsonfile": "^2.2.3",
     "mongoose": "^4.4.8",
     "multer": "^1.1.0"
   }

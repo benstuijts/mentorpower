@@ -1,0 +1,74 @@
+<% include ../partials/header %>
+
+<body>
+    <% include ../partials/navigation %>
+    
+    
+<div class="row subject">
+    <div class="container">
+        <h1 class="subject-title"><%= article.title %></h1>
+        <h2 class="subject-subtitle">
+            <%= article.subtitle %>
+            <hr>
+            <a href="<%= urlFor('home') %>" class="btn btn-default" title="Homepage">
+                <i class="fa fa-home fa-2x"></i>
+            </a>
+            <a href="mailto:<%= contact.email %>?subject=Ik heb een vraag over mentorpower" class="btn btn-default" title="Neem contact met mij op per Email">
+                <i class="fa fa-envelope-o fa-2x"></i>
+            </a>
+            <a href="<%= contact.linkin %>" class="btn btn-default" target="_blank" title="linkedin pagina van Ben Stuijts">
+                <i class="fa fa-linkedin-square fa-2x"></i>
+            </a>
+            <a href="<%= contact.facebook %>" class="btn btn-default" target="_blank" title="Facebook pagina van MentorPower">
+                <i class="fa fa-facebook-square fa-2x"></i>
+            </a>
+            <a href="<%= contact.google %>" class="btn btn-default" target="_blank" title="Google pagina van MentorPower">
+                <i class="fa fa-google-plus-square fa-2x"></i>
+            </a>
+            <a href="<%= contact.twitter %>" class="btn btn-default" target="_blank" title="Google pagina van MentorPower">
+                <i class="fa fa-twitter-square fa-2x"></i>
+            </a>
+        </h2>
+    </div>
+        
+</div>
+    
+
+<div class="container">
+    <% include ../partials/breadcrumbs %>
+    
+    <img src="<%= article.image %>" class="img-responsive">
+    
+
+    
+    <%- article.body %>
+    
+    <h3>Lees meer artikelen</h3>
+    <ul class="list-group">
+    <% for(var i=0; i<links.length;i++) { %>
+        <li class="list-group-item">
+            
+            <a href="<%= baseUrl %><%= links[i].slug %>" title="<%= links[i].title %>"><%= links[i].title %></a>
+        </li>
+    
+    <% } %>
+    </ul>
+    
+    <div class="row">
+        
+    <% for(var i=0; i<links.length;i++) { %>
+        <a href="<%= links[i].slug %>" class="thumbnail-square" style="background: url(<%= links[i].image %>) no-repeat;">
+            <p class="thumbnail-square-caption"style="">
+                <%= links[i].title %>
+            </p>
+        </a>
+    <% } %>
+        
+    </div>
+    
+    
+</div>
+
+
+</body>
+</html>

@@ -2,6 +2,7 @@ const express       = require('express');
 const router        = express.Router();
 const bodyParser    = require('body-parser');
 const session       = require('express-session');
+const jsonfile      = require('jsonfile')
 const config        = require('../config');
 const mongoose      = require('mongoose');
 const Article       = require('../models/Article');
@@ -42,38 +43,31 @@ router.use(session({
         saveUninitialized: true,
 }));
 
-var articles;
 
-Article._read({}).then(function(result){
-    //console.log(result);
-});
 
-Article._update({title: 'test artikel 2'}, { subtitle: 'Een nieuwe subtitel'})
-       .then(function(result){
-           console.log('Er zijn ' + result + ' documenten aangepast');
-       })
-       .catch(function(error){
-           console.log('Er is iets mis gegaan : ' + error);
-       });
+function updateUrlLog() {
+    var output = [];
+    Article._read({},{'slug':1, '_id': 0})
+        .then(function(slugs){
+            slugs.forEach(function(slug){
+                output.push("/" + slug.slug);
+            });
+            
+            
+            jsonfile.writeFile('./available-urls.json', output, function(error){
+                if(error) {
+                    console.log('Logging URLs of website went wrong');
+                }
+            });
+            
+        })
+        .catch(function(error){});
+};
 
-Article._delete({title: 'new article tYNsAm93'})
-       .then(function(result){
-           console.log(result + ' document(s) deleted');
-       })
-       .catch(function(error){
-           console.log('ERROR: ' +error);
-       });
-
-Article._readOne({_id: '56f5c820ab808bda0a0853b8'})
-       .then(function(result){
-           console.log('readOne: ');
-           console.log(result);
-       });
-
-Article._search('artikel', 'title')
+Article._search('mooi', 'title')
        .then(function(results){
-           console.log('Documents found:' + results.length);
-           console.log(results);
+           //console.log('Documents found:' + results.length);
+           //console.log(results);
        });
 
 
@@ -136,22 +130,13 @@ const login_form = function(res, extra) {
     res.render('./admin/login', admin_params.add(extra));
 };
 const dashboard = function(res, extra) {
-    
-    Article.getAllArticles().then(function(articles){
-        admin_params.articles = articles;
-        res.render('./admin/dashboard',admin_params.add(extra));
-    });
-    
-    /*
-    Article.find({}, function(err, articles){
-        if(err) {
-            admin_params['message'] = {type: 'warning', body: 'Error getting all articles from database.', icon: 'exclamation-triangle' };
-        }
-        admin_params.articles = articles;
-        res.render('./admin/dashboard',admin_params.add(extra));
-    });
-    */
-};
+
+    Article._read({})
+           .then(function(articles){
+               admin_params.articles = articles;
+               res.render('./admin/dashboard',admin_params.add(extra));
+           });
+    };
 const images = function(res, extra) {
     Image.find({}, function(err, images) {
         if(err) {
@@ -197,6 +182,11 @@ router.post('/', function(req, res){
     res.redirect('admin/dashboard');
 });
 
+router.get('/updatelog', function(req, res){
+    updateUrlLog();
+    login_form(res, null);
+});
+
 router.get('/dashboard', isLoggedIn, function(req, res){
     var action = req.query.action || 'ALL_ARTICLES';
     switch(action) {
@@ -236,7 +226,7 @@ router.get('/dashboard', isLoggedIn, function(req, res){
             var cb = function() {
                 dashboard(res, { message: {type: 'success', body: 'Article successfully published.', icon: 'check-square-o'},
                 action:"ALL_ARTICLES"})};
-
+            updateUrlLog();
             Article.publish(req.query.id, cb);
   
         break;
@@ -245,14 +235,14 @@ router.get('/dashboard', isLoggedIn, function(req, res){
             var cb = function() {
                 dashboard(res, { message: {type: 'success', body: 'Article successfully muted.', icon: 'check-square-o'},
                 action:"ALL_ARTICLES"})};
-            
+            updateUrlLog();
             Article.mute(req.query.id, cb);    
             
         break;
         
         case 'DELETE_ARTICLE':
             console.log('deleting article');
-            
+            updateUrlLog();
             Article.$deleteById(req.query.id, function(error) {
                 var message;
                 if(error) {
@@ -284,6 +274,7 @@ router.post('/dashboard', isLoggedIn, function(req,res){
         var title = req.body.title, subtitle = req.body.subtitle, slug = req.body.slug,
             tags = req.body.tags, author = req.body.author || config.author, 
             image = req.body.image, body = req.body.body;
+            
         if(title == '') {
             message.body = 'A new Article must have a title!';
             dashboard(res, {message:message});
@@ -309,6 +300,7 @@ router.post('/dashboard', isLoggedIn, function(req,res){
                 message.body = 'There was a problem saving the article in de database.';
                 dashboard(res, {action: req.body.action, message: message});
             } else {
+                updateUrlLog();
                 message.type = 'success';
                 message.body = 'Article was saved in the database';
                 message.icon = 'check-square-o';
@@ -330,6 +322,7 @@ router.post('/dashboard', isLoggedIn, function(req,res){
             if(err) {
                 console.log(err);
             } else {
+                updateUrlLog();
                 message.type = 'success';
                 message.body = 'Article was saved in the database';
                 message.icon = 'check-square-o';

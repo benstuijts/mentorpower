@@ -19,6 +19,15 @@
         <input type="hidden" name="id" value="<%= _id %>">
         <input type="hidden" name="action" value="<%= action %>">
     </form>
+    
+    <h2>Preview</h2>
+    <hr>
+    <h2><%= title %></h2>
+    <h3><%= subtitle %></h3>
+    <div>
+        <%- body %>
+    </div>
+    
 </div>
 
 <% function create_form_field(name, caption, value) { %>

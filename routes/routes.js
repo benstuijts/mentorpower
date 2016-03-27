@@ -3,7 +3,8 @@ var router      = express.Router();
 var url         = require('url');
 var voorbeelden = require('../data/voorbeelden');
 var config      = require('../config.js');
-
+var Article     = require('../models/Article');
+var availableUrls = require('../available-urls.json');
 
 
 router.use(function (req, res, next) {
@@ -13,7 +14,7 @@ router.use(function (req, res, next) {
         host: req.get('host'),
         pathname: req.originalUrl
     });    
-
+    
    res.locals = {
      author: "Ben Stuijts",
      baseUrl: "https://mentorpower2016-stuijts.c9users.io/",
@@ -183,11 +184,45 @@ router.get('/verhalen', function(req, res){
     });
 });
 
-
-
-
 router.get('/artikelen', function(req, res){
     res.send('Artikelen');
+});
+
+router.get(availableUrls, function(req, res){
+    var url = req.url.substr(1);
+    var links;
+    
+    Article._read({}, {title: 1, slug: 1, image: 1,_id:0})
+            .then(function(results){
+                links = results;
+                console.log(links);
+                return Article._read({slug: url});
+            })
+           .then(function(article){
+               
+               if(article) {
+                    console.log('-----------');
+                   console.log('URL' + url);
+                   console.log(article);
+                   res.render('paginas/artikel', {
+                       title: article[0].title,
+                       description: article[0].title,
+                       keywords: article[0].tags,
+                       breadcrumbs: [
+                           { name: 'home', url: '/' },
+                           { name: 'verhalen', url: '/verhalen' },
+                           { name: article[0].title, url: '/' + article[0].slug }
+                        ],
+                       article: article[0],
+                       links: links
+                   });    
+               }
+               
+               
+           })
+           .catch(function(error){
+               
+           });
 });
 
 module.exports = router;

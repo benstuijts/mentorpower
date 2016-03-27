@@ -20,7 +20,10 @@
                 <% } %>
             </td>
             <td><%= articles[i].subtitle %></td>
-            <td><%= articles[i].slug %></td>
+            <td>
+                <a href="<%= baseUrl %>/<%= articles[i].slug %>"><%= articles[i].slug %></a>
+                
+            </td>
             <td><%= articles[i].tags %></td>
             <td><img width="128" title="<%=articles[i].image%>" src="<%=articles[i].image%>" class="img-thumbnail"></td>
             <td><%= articles[i].views %></td>
