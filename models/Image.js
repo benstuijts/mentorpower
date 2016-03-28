@@ -8,7 +8,13 @@ var imageSchema = mongoose.Schema({
     title: String,
     extension: String
 
+},
+{
+    timestamps: true
 });
+
+imageSchema.statics = require('../modules/mongoose-statics');
+
 
 imageSchema.methods.test = function() {
     return('resting Image Method');

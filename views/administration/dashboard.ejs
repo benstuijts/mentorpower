@@ -4,9 +4,13 @@
     <div class="container-fluid">
         
         <h1>
-            <i class="fa fa-cogs"></i> Administration Dashboard
-            <a href="<%= baseUrl %>admin/logout" class="btn btn-warning pull-right">Logout</a>
+            <i class="fa fa-cogs" style="color: dodgerblue;"></i> Administration Dashboard
+            <a href="<%= baseUrl %>admin/logout" class="btn btn-danger pull-right">Logout</a>
         </h1>
+        
+        <% include partials/top-menu-bar %>
+        
+        <% include partials/message %>
         
         <div class="row">
             <a href="?action=ALL_ARTICLES" class="btn btn-default"><i class="fa fa-home"></i> All articles</a>
@@ -16,29 +20,35 @@
         
         </div>
         
-        <% if(message) { %>
-            <div class="row">
-                <div class="col-xs-12  alert alert-<%= message.type %>">
-                    <i class="fa fa-<%= message.icon %>"></i> <%= message.body %>
-                </div>
-            </div>
+        <% if(action == 'ALL_ARTICLES') { %>
+            <% include partials/all_articles %>
         <% } %>
         
+        <% if(action == 'CREATE_ARTICLE') { %>
+            <% include partials/create_article %>
+        <% } %>
+        
+        <% if(action == 'EDIT_ARTICLE') { %>
+            <% include partials/edit_article %>
+        <% } %>
+        
+        
+        
         <% if(action == 'UPLOAD_IMAGE') { %>
-            <% include upload_image %>
+            <% //include upload_image %>
         <% } %>
         
         <% if(action == 'ALL_ARTICLES') { %>
-            <% include all_articles %>
+            <% //include all_articles %>
         <% } %>
         
         
         <% if(action == 'CREATE_ARTICLE') { %>
-            <% include create_article %>
+            <% //include create_article %>
         <% } %>
         
         <% if(action == 'EDIT_ARTICLE') { %>
-            <% include edit_article %>
+            <% //include edit_article %>
         <% } %>
         
         

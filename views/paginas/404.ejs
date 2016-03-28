@@ -6,9 +6,9 @@
     
 <div class="row subject">
     <div class="container">
-        <h1 class="subject-title">Verhalen en voorbeelden van mentorschap</h1>
+        <h1 class="subject-title">Pagina niet gevonden!</h1>
         <h2 class="subject-subtitle">
-            Laat je inspireren door anderen.
+            Maar niet treur niet te lang en probeer er één hieronder...
             <hr>
             <a href="<%= urlFor('home') %>" class="btn btn-default" title="Homepage">
                 <i class="fa fa-home fa-2x"></i>
@@ -34,17 +34,16 @@
 </div>
 
 <div class="container">
-    <% include ../partials/breadcrumbs %>
-    
+
         <ul class="list-group">
-    <% for(var i=0; i<links.length;i++) { %>
-        <li class="list-group-item">
-            
-            <a href="<%= baseUrl %><%= links[i].slug %>" title="<%= links[i].title %>"><%= links[i].title %></a>
-        </li>
-    
-    <% } %>
-    </ul>
+        <% for(var i=0; i<links.length;i++) { %>
+            <li class="list-group-item">
+                
+                <a href="<%= baseUrl %><%= links[i].slug %>" title="<%= links[i].title %>"><%= links[i].title %></a>
+            </li>
+        
+        <% } %>
+        </ul>
     
     <div class="row">
         
@@ -59,10 +58,6 @@
     </div>
     
 </div>
-
-<% include ../content/voorbeelden %>
-
-<% include ../content/mentorpower-zakelijk %>
 
 </body>
 </html>

@@ -2,7 +2,6 @@ const express       = require('express');
 const router        = express.Router();
 const bodyParser    = require('body-parser');
 const session       = require('express-session');
-const jsonfile      = require('jsonfile')
 const config        = require('../config');
 const mongoose      = require('mongoose');
 const Article       = require('../models/Article');
@@ -43,48 +42,6 @@ router.use(session({
         saveUninitialized: true,
 }));
 
-
-
-function updateUrlLog() {
-    var output = [];
-    Article._read({},{'slug':1, '_id': 0})
-        .then(function(slugs){
-            slugs.forEach(function(slug){
-                output.push("/" + slug.slug);
-            });
-            
-            
-            jsonfile.writeFile('./available-urls.json', output, function(error){
-                if(error) {
-                    console.log('Logging URLs of website went wrong');
-                }
-            });
-            
-        })
-        .catch(function(error){});
-};
-
-Article._search('mooi', 'title')
-       .then(function(results){
-           //console.log('Documents found:' + results.length);
-           //console.log(results);
-       });
-
-
-/*
-Article.count().then(function(result){
-    console.log('There are ' + result + ' documents in the database.');
-    return Article.create({title: 'new article ' + randomString(8)});
-}).then(function(result){
-    console.log('Created this object in database ' + result);
-    return Article.count();
-}).then(function(result){
-    console.log('The are ' + result + ' documents in the database now' );
-}).catch(function(error){
-    console.log('Something went wrong: ' + error);
-});
-*/
-
 var isLoggedIn = function(req, res, next) {
         if(!req.session.login) {
             res.redirect('/admin');
@@ -94,18 +51,21 @@ var isLoggedIn = function(req, res, next) {
 };
 
 router.use(function (req, res, next) {
-    
+
     res.locals = {
-        baseUrl: 'https://mentorpower2016-stuijts.c9users.io',
+        baseUrl: config.baseUrl,
         message: {
             type: null,
             body: null,
             icon: null
-        }  
+        },
+        url: req.url
     };
     
     next();
 });
+
+
 
 var admin_params = {
     title: 'Administration Area',
@@ -127,33 +87,47 @@ var admin_params = {
 };
 
 const login_form = function(res, extra) {
-    res.render('./admin/login', admin_params.add(extra));
+    res.render('./administration/login', admin_params.add(extra));
 };
 const dashboard = function(res, extra) {
-
-    Article._read({})
-           .then(function(articles){
-               admin_params.articles = articles;
-               res.render('./admin/dashboard',admin_params.add(extra));
-           });
+    if(res.message) {
+        admin_params.message = 
+            res.message;
+    }
+    Article._read({}, {}, {
+        sort: {
+            createdAt: -1
+        }
+    })
+        .then(function(articles){
+            admin_params.articles = articles;
+            res.render('./administration/dashboard',admin_params.add(extra));
+        });
     };
 const images = function(res, extra) {
-    Image.find({}, function(err, images) {
-        if(err) {
+    
+    Image._read({})
+        .then(function(result){
+            admin_params.images = result;
+            res.render('./admin/images',admin_params.add(extra));
+        })
+        .catch(function(error){
             admin_params['message'] = {type: 'warning', body: 'Error getting all images from database.', icon: 'exclamation-triangle' };
-        } 
-        admin_params.images = images;
-        res.render('./admin/images',admin_params.add(extra));
-    });
+            res.render('./admin/images',admin_params);
+        });
 };
 const imagelist = function(res, extra) {
-    Image.find({}, function(err, images) {
-        if(err) {
+    
+    Image._read({})
+        .then(function(result){
+            admin_params.images = result;
+            res.render('./admin/image_list',admin_params.add(extra));
+        })
+        .catch(function(error){
             admin_params['message'] = {type: 'warning', body: 'Error getting all images from database.', icon: 'exclamation-triangle' };
-        } 
-        admin_params.images = images;
-        res.render('./admin/image_list',admin_params.add(extra));
-    });
+            res.render('./admin/image_list',admin_params);
+        });
+
 };
 
 router.get('/', function(req, res){
@@ -182,13 +156,10 @@ router.post('/', function(req, res){
     res.redirect('admin/dashboard');
 });
 
-router.get('/updatelog', function(req, res){
-    updateUrlLog();
-    login_form(res, null);
-});
-
 router.get('/dashboard', isLoggedIn, function(req, res){
     var action = req.query.action || 'ALL_ARTICLES';
+    res.message = { type: 'info', body: 'Welcome ' };
+    
     switch(action) {
         case 'NONE':
         case 'ALL_ARTICLES':
@@ -205,7 +176,6 @@ router.get('/dashboard', isLoggedIn, function(req, res){
                 if(err) {
                     
                 } else {
-                    
                     dashboard(res, {
                         _id: article._id,
                         title: article.title,
@@ -223,36 +193,44 @@ router.get('/dashboard', isLoggedIn, function(req, res){
         break;
         
         case 'PUBLISH_ARTICLE':
-            var cb = function() {
-                dashboard(res, { message: {type: 'success', body: 'Article successfully published.', icon: 'check-square-o'},
-                action:"ALL_ARTICLES"})};
-            updateUrlLog();
-            Article.publish(req.query.id, cb);
-  
+            var message;
+            Article.publish(req.query.id, function(error){
+                if(error) {
+                    message = { type: 'error', body: error };
+                } else {
+                    message = { type: 'success', body: 'Article is published on website'};
+                }
+                dashboard(res, {message: message});
+            });
+            
         break;
         
         case 'MUTE_ARTICLE':
-            var cb = function() {
-                dashboard(res, { message: {type: 'success', body: 'Article successfully muted.', icon: 'check-square-o'},
-                action:"ALL_ARTICLES"})};
-            updateUrlLog();
-            Article.mute(req.query.id, cb);    
+            var message;
+            Article.mute(req.query.id, function(error){
+                if(error) {
+                    message = { type: 'error', body: error };
+                } else {
+                    message = { type: 'success', body: 'Article is muted.'};
+                }
+                dashboard(res, {message: message});
+            });
             
         break;
         
         case 'DELETE_ARTICLE':
             console.log('deleting article');
-            updateUrlLog();
-            Article.$deleteById(req.query.id, function(error) {
-                var message;
-                if(error) {
-                    message = {type: 'warning', body: 'Error deleting article from database.', icon: 'exclamation-triangle'};  
-                } else {
-                    message = {type: 'success', body: 'Article deleted successfully from database.', icon: 'check-square-o'};
-                }
-                dashboard(res, {message:message});   
-            });
-            
+            var message;
+            Article._deleteById(req.query.id)
+                .then(function(result){
+                    message = { type: 'success', body: 'Article was deleted from database.'};
+                    dashboard(res, {message: message});
+                })
+                .catch(function(error){
+                    message = { type: 'error', body: error};
+                    dashboard(res, {message: message});
+                });
+
         break;
         
         default:
@@ -300,7 +278,6 @@ router.post('/dashboard', isLoggedIn, function(req,res){
                 message.body = 'There was a problem saving the article in de database.';
                 dashboard(res, {action: req.body.action, message: message});
             } else {
-                updateUrlLog();
                 message.type = 'success';
                 message.body = 'Article was saved in the database';
                 message.icon = 'check-square-o';
@@ -322,7 +299,7 @@ router.post('/dashboard', isLoggedIn, function(req,res){
             if(err) {
                 console.log(err);
             } else {
-                updateUrlLog();
+                
                 message.type = 'success';
                 message.body = 'Article was saved in the database';
                 message.icon = 'check-square-o';

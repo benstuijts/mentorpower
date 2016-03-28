@@ -14,6 +14,9 @@ var articleSchema = mongoose.Schema({
     settings: mongoose.Schema.Types.Mixed,
     _statics: mongoose.Schema.Types.Mixed
     
+},
+{
+    timestamps: true
 });
 
 // Static methods: CRUD Create, Read, Update, Delete
@@ -29,6 +32,32 @@ var articleSchema = mongoose.Schema({
     
 */
 articleSchema.statics = require('../modules/mongoose-statics');
+
+articleSchema.statics.publish = function(_id, cb) {
+    this.findOne({_id: _id}, {}, function(error, article){
+        if(error) { 
+            return cb(error); 
+        } else {
+            article.published = true;
+            article.save();
+            cb(false);
+        }
+    });
+};
+
+articleSchema.statics.mute = function(_id, cb) {
+    this.findOne({_id: _id}, {}, function(error, article){
+        if(error) { 
+            return cb(error); 
+        } else {
+            article.published = false;
+            article.save();
+            cb(false);
+        }
+    });
+};
+
+
 
 // options nog uitzoeken
 
@@ -68,28 +97,6 @@ articleSchema.statics.getAll = function(cb) {
     });
 };
 
-articleSchema.statics.publish = function(_id, cb) {
-    this.findOne({_id: _id}, {}, function(error, article){
-        if(error) { 
-            return false; 
-        } else {
-            article.published = true;
-            article.save();
-            cb();
-        }
-    });
-};
-articleSchema.statics.mute = function(_id, cb) {
-    this.findOne({_id: _id}, {}, function(error, article){
-        if(error) { 
-            return false; 
-        } else {
-            article.published = false;
-            article.save();
-            cb();
-        }
-    });
-};
 articleSchema.statics.delete = function(_id, cb) {
     this.remove({_id: _id}, function(error){
         if(error) {

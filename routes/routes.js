@@ -4,7 +4,7 @@ var url         = require('url');
 var voorbeelden = require('../data/voorbeelden');
 var config      = require('../config.js');
 var Article     = require('../models/Article');
-var availableUrls = require('../available-urls.json');
+
 
 
 router.use(function (req, res, next) {
@@ -15,29 +15,34 @@ router.use(function (req, res, next) {
         pathname: req.originalUrl
     });    
     
-   res.locals = {
-     author: "Ben Stuijts",
-     baseUrl: "https://mentorpower2016-stuijts.c9users.io/",
-     contact: {
-         email: "benstuijts@mentorpower.nl",
-         telephone: "0031651363602",
-         website: "http://www.mentorpower.nl",
-         linkin: "https://nl.linkedin.com/in/benstuijts",
-         facebook: "https://www.facebook.com/mentorpower.nl",
-         twitter: "https://twitter.com/BenStuijts",
-         google: "https://www.google.com/+MentorpowerNl",
-         address: "Maltaweide 8, 3223MJ Hellevoetsluis",
-         kvk: "63508109",
-         iban: "NL48 KNAB 0732 2691 13",
-         btw: "NL196390400B01"
-     },
-     url: u,
-     urlFor: function(url) {
-         return '/' + url
-     },
-     voorbeelden: voorbeelden,
-   };
-   next();
+    Article._read({}, {title: 1, slug: 1, image: 1, _id: 0})
+        .then(function(result){
+            res.locals = {
+                author: "Ben Stuijts",
+                baseUrl: "https://mentorpower2016-stuijts.c9users.io/",
+                contact: {
+                    email: "benstuijts@mentorpower.nl",
+                    telephone: "0031651363602",
+                    website: "http://www.mentorpower.nl",
+                    linkin: "https://nl.linkedin.com/in/benstuijts",
+                    facebook: "https://www.facebook.com/mentorpower.nl",
+                    twitter: "https://twitter.com/BenStuijts",
+                    google: "https://www.google.com/+MentorpowerNl",
+                    address: "Maltaweide 8, 3223MJ Hellevoetsluis",
+                    kvk: "63508109",
+                    iban: "NL48 KNAB 0732 2691 13",
+                    btw: "NL196390400B01"
+                },
+                url: u,
+                urlFor: function(url) {
+                    return '/' + url;
+                },
+                voorbeelden: voorbeelden,
+                links: result
+                };
+            next();
+        });
+    
 });
 
 router.get('/home', function(req, res){ res.redirect('/')});
@@ -65,9 +70,11 @@ router.get('/mentorschap-wat-is-het', function(req, res){
   });
 });
 
+/*
 router.get('/teambuilding', function(req, res){
     res.send('teambuilding');
 });
+*/
 
 router.get('/brainstormen', function(req, res){
     res.send('brainstormen');
@@ -188,41 +195,31 @@ router.get('/artikelen', function(req, res){
     res.send('Artikelen');
 });
 
-router.get(availableUrls, function(req, res){
-    var url = req.url.substr(1);
-    var links;
-    
-    Article._read({}, {title: 1, slug: 1, image: 1,_id:0})
-            .then(function(results){
-                links = results;
-                console.log(links);
-                return Article._read({slug: url});
-            })
-           .then(function(article){
-               
-               if(article) {
-                    console.log('-----------');
-                   console.log('URL' + url);
-                   console.log(article);
-                   res.render('paginas/artikel', {
-                       title: article[0].title,
-                       description: article[0].title,
-                       keywords: article[0].tags,
-                       breadcrumbs: [
-                           { name: 'home', url: '/' },
-                           { name: 'verhalen', url: '/verhalen' },
-                           { name: article[0].title, url: '/' + article[0].slug }
-                        ],
-                       article: article[0],
-                       links: links
-                   });    
-               }
-               
-               
-           })
-           .catch(function(error){
-               
-           });
+router.get('*', function(req, res){
+    Article._read({ slug: req.url.substr(1)})
+        .then(function(article){
+            if(article.length == 0 ) {
+                res.render('./paginas/404', {
+                   title: 'Pagina niet gevonden...',
+                   description: 'Pagina niet gevonden, niet te lang treuren, probeer een ander.',
+                   keywords: '404'
+                });
+            }
+            res.render('paginas/artikel', {
+                   title: article[0].title,
+                   description: article[0].title,
+                   keywords: article[0].tags,
+                   breadcrumbs: [
+                       { name: 'home', url: '/' },
+                       { name: 'verhalen', url: '/verhalen' },
+                       { name: article[0].title, url: '/' + article[0].slug }
+                    ],
+                   article: article[0],
+               });
+        })
+        .catch(function(error){
+            res.send('ERROR: ' + error);
+        });
 });
 
 module.exports = router;

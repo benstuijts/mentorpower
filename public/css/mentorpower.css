@@ -148,7 +148,7 @@ p {
     position: relative; 
     display: inline-block;
     background-color: white;
-    background-size: cover;
+    background-size: contain;
     background-position: center;
     min-width: 160px;
     width: 25%; 

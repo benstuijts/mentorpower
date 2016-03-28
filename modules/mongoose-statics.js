@@ -85,10 +85,12 @@ module.exports = {
         // Date functions
         
         // Sort functions
-        
+
         _asc: function() {},
         _desc: function() {},
-        _limit: function() {},
+        _limit: function(query, fields, limit) {
+            return this._read(query, fields, { limit: limit});
+        },
         
         // Misc
         
