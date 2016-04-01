@@ -3,6 +3,46 @@
 <body>
     <% include ../partials/navigation %>
     
+
+<div class="row">
+    <div style="position: relative; width: 100%; height: 560px; display: block;padding: 20px; margin-bottom: 40px;">
+        <div style="position: absolute; left: 0px; top: 0px; width: 100%; height: 50%; background: dodgerblue; text-align: center;">
+            <h1 style="width: 100%; text-align: center; color: white;"><%= article.title %></h1>
+            <h3 style="text-transform: uppercase; width: 100%;"><%= article.author %> | <%= article.updatedAt %></h3>
+        </div>
+        <div style="position: absolute; left: 25%; top: 25%; width: 50%; height: 75%; text-align: center;">
+            <img style="margin-left:auto;margin-right:auto; border: 3px solid #333;" src="<%= article.image %>" class="img-responsive">
+        </div>
+    </div>
+    
+    <div class="container">
+        <% include ../partials/breadcrumbs %>
+        <% include ../partials/share-square %>
+        <div class="article">
+            <%- article.body %>
+        </div>
+            
+    <hr>
+    <h3>Lees meer artikelen</h3>
+    <ul class="list-group">
+    <% for(var i=0; i<links.length;i++) { %>
+        <li class="list-group-item">
+            
+            <a href="<%= baseUrl %><%= links[i].slug %>" title="<%= links[i].title %>"><%= links[i].title %></a>
+        </li>
+    
+    <% } %>
+    </ul>
+        
+        
+    </div>
+    
+    
+    
+    
+</div>
+
+
     
 <div class="row subject">
     <div class="container">

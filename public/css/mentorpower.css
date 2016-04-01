@@ -169,3 +169,16 @@ p {
     color: white; 
     width: 100%;
 }
+
+.article > p {
+    line-height: 2.5em;
+    font-family: Georgia,"Times New Roman",Times,serif;
+}
+.article > p:first-child { 
+    color: grey;
+}
+
+.article > p:first-child:first-letter { 
+    font-size: 300%;
+    color: dodgerblue;
+}
