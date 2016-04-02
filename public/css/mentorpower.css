@@ -151,7 +151,7 @@ p {
     background-size: contain;
     background-position: center;
     min-width: 160px;
-    width: 25%; 
+    width: 24%; 
     padding: 0px;
     margin: 0px;
     overflow: hidden;
@@ -165,6 +165,7 @@ p {
 .thumbnail-square-caption {
     position: absolute; 
     bottom: 10px; left: 0px; 
+    padding-left: 10px;
     background: rgba(0,0,0,.7); 
     color: white; 
     width: 100%;
