@@ -180,6 +180,7 @@ router.get('/dashboard', isLoggedIn, function(req, res){
                         _id: article._id,
                         title: article.title,
                         subtitle: article.subtitle,
+                        backgroundColor: article.backgroundColor,
                         slug: article.slug,
                         tags: article.tags,
                         author: article.author,
@@ -250,6 +251,7 @@ router.post('/dashboard', isLoggedIn, function(req,res){
     
     if(req.body.action === 'CREATE_ARTICLE') {
         var title = req.body.title, subtitle = req.body.subtitle, slug = req.body.slug,
+            backgroundColor = req.body.backGroundColor,
             tags = req.body.tags, author = req.body.author || config.author, 
             image = req.body.image, body = req.body.body;
             
@@ -266,6 +268,7 @@ router.post('/dashboard', isLoggedIn, function(req,res){
         var article = new Article();
             article.title = title;
             article.subtitle = subtitle;
+            article.backgroundColor = backgroundColor;
             article.slug = slug;
             article.tags = tags;
             article.author = author;
@@ -290,6 +293,7 @@ router.post('/dashboard', isLoggedIn, function(req,res){
         Article.update({_id: req.body.id}, {
             title: req.body.title,
             subtitle: req.body.subtitle,
+            backgroundColor: req.body.backgroundColor,
             slug: req.body.slug,
             tags: req.body.tags,
             author: req.body.author,
@@ -301,7 +305,7 @@ router.post('/dashboard', isLoggedIn, function(req,res){
             } else {
                 
                 message.type = 'success';
-                message.body = 'Article was saved in the database';
+                message.body = 'Article ' + req.body.title + ' was saved in the database';
                 message.icon = 'check-square-o';
                 dashboard(res, {message: message, action:"ALL_ARTICLES"});
             }

@@ -9,6 +9,7 @@ var articleSchema = mongoose.Schema({
     author: String,
     image: String,
     body: String,
+    backgroundColor: { type: String, default: "BurlyWood"},
     views: {type: Number, default: 0},
     published: {type: Boolean, default: false},
     settings: mongoose.Schema.Types.Mixed,
@@ -32,6 +33,22 @@ var articleSchema = mongoose.Schema({
     
 */
 articleSchema.statics = require('../modules/mongoose-statics');
+
+articleSchema.statics.getDescription = function(body) {
+    var response = body.replace(/<(?:.|\n)*?>/gm, '');
+    return response.substr(0,150);  
+};
+
+articleSchema.statics.getSnippit = function(body, words) {
+    
+    //var response;
+    //var response = body.replace(/(([^\s]+\s\s*){10})(.*)/,"$1…"); 
+    var response = body.replace(/<(?:.|\n)*?>/gm, '');
+    
+    //var str2 = str1.replace(/(([^\s]+\s\s*){20})(.*)/,"$1…");
+    
+    return trimByWord(response, words); 
+};
 
 articleSchema.statics.publish = function(_id, cb) {
     this.findOne({_id: _id}, {}, function(error, article){
@@ -127,4 +144,16 @@ module.exports = mongoose.model('Article', articleSchema);
 
 String.prototype.capitalize = function() {
     return this.charAt(0).toUpperCase() + this.slice(1);
+};
+
+function trimByWord(sentence, words) {
+    var result = sentence;
+    var resultArray = result.split(" ");
+    if(resultArray.length > words){
+        resultArray = resultArray.slice(0, words);
+        result = resultArray.join(" ") + "...";
+    }
+    return result;
 }
+
+

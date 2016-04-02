@@ -180,5 +180,4 @@ p {
 
 .article > p:first-child:first-letter { 
     font-size: 300%;
-    color: dodgerblue;
 }

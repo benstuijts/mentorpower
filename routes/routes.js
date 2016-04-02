@@ -38,7 +38,8 @@ router.use(function (req, res, next) {
                     return '/' + url;
                 },
                 voorbeelden: voorbeelden,
-                links: result
+                links: result,
+                article: null,
                 };
             next();
         });
@@ -205,9 +206,10 @@ router.get('*', function(req, res){
                    keywords: '404'
                 });
             }
+            
             res.render('paginas/artikel', {
                    title: article[0].title,
-                   description: article[0].title,
+                   description: Article.getDescription(article[0].body),
                    keywords: article[0].tags,
                    breadcrumbs: [
                        { name: 'home', url: '/' },
@@ -215,11 +217,13 @@ router.get('*', function(req, res){
                        { name: article[0].title, url: '/' + article[0].slug }
                     ],
                    article: article[0],
+                   snippit: Article.getSnippit(article[0].body, 80),
                });
         })
         .catch(function(error){
             res.send('ERROR: ' + error);
         });
+        
 });
 
 module.exports = router;
