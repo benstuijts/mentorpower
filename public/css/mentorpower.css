@@ -1,3 +1,12 @@
+/* Colors */
+
+.facebook { background: #337ab7; color: white;}
+.twitter { background: #5bc0de; color: white;}
+.google { background: #d9534f; color: white;}
+.linkedin { background: DodgerBlue; color: white;}
+
+/* END Colors */
+
 body {
     width: 100%;
     overflow-x: hidden;
@@ -182,3 +191,32 @@ p {
 .article > p:first-child:first-letter { 
     font-size: 300%;
 }
+
+/* Share-square */
+
+.share-square {
+    position: relative; width: 160px; height: 160px; border: 1px solid grey; border-radius: 10px; float: right; margin: 10px
+}
+.share-square-part {
+    position: absolute; display: block; width: 80px; height: 60px; color: white; line-height: 70px; text-align: center;
+}
+.share-square-facebook {
+    top: 0px; left: 0px;
+    background: #337ab7; border-top-left-radius: 10px;
+}
+.share-square-twitter {
+    top: 0px; right: 0px;
+    background: #5bc0de; border-top-right-radius: 10px;
+}
+.share-square-google {
+    bottom: 0px; left: 0px;
+    background: #d9534f; border-bottom-left-radius: 10px;
+}
+.share-square-linkedin {
+    bottom: 0px; right: 0px;
+    background: dodgerblue; border-bottom-right-radius: 10px;
+}
+.share-square-share {
+    position: absolute; top: 60px; left: 0px; width: 100%; height: 40px;line-height: 40px; text-align: center;background: black; color: white;
+}
+/* END Share-square */
