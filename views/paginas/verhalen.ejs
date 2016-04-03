@@ -36,6 +36,12 @@
 <div class="container">
     <% include ../partials/breadcrumbs %>
     
+    <% if(links.length > 0 ) { %>
+        <% include ../content/mentorpower-artikelen %> 
+    <% } %>
+    
+    
+    
         <ul class="list-group">
     <% for(var i=0; i<links.length;i++) { %>
         <li class="list-group-item">
@@ -45,18 +51,6 @@
     
     <% } %>
     </ul>
-    
-    <div class="row">
-        
-    <% for(var i=0; i<links.length;i++) { %>
-        <a href="<%= links[i].slug %>" class="thumbnail-square" style="background: url(<%= links[i].image %>) no-repeat;">
-            <p class="thumbnail-square-caption"style="">
-                <%= links[i].title %>
-            </p>
-        </a>
-    <% } %>
-        
-    </div>
     
 </div>
 

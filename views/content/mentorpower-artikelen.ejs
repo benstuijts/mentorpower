@@ -1,25 +1,24 @@
 <div id="artikelen-mentorpower"></div>
+
 <div class="row subject">
+    
     <div class="container">
         <h1 class="subject-title">Artikelen MentorPower</h1>
-        <h2 class="subject-subtitle"></h2>
-    </div>
-</div>
-<div class="container">
-    
-        <div class="row">
-    
-    
-     
-    <% for(var i=0; i<links.length;i++) { %>
+        
+        <% for(var i=0; i<links.length;i++) { %>
         <a href="<%= links[i].slug %>" class="thumbnail-square" style="; background: url(<%= links[i].image %>) no-repeat; background-color: <%= links[i].backgroundColor %>">
             <p class="thumbnail-square-caption"style="">
                 <%= links[i].title %>
             </p>
         </a>
     <% } %>
+        <hr>
+    
         
     </div>
-
+    
+    
     
 </div>
+
+

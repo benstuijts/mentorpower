@@ -17,6 +17,7 @@ router.use(function (req, res, next) {
     
     Article._read({}, {title: 1, slug: 1, image: 1, backgroundColor: 1, _id: 0})
         .then(function(result){
+            
             res.locals = {
                 author: "Ben Stuijts",
                 baseUrl: "https://mentorpower2016-stuijts.c9users.io/",
