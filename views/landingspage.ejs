@@ -8,8 +8,13 @@
     <div id="first-article"></div>
     <% include ./content/introduction %>
     <% include ./content/voorbeelden %>
-    <% include ./content/mentorpower-zakelijk %>
-    <% include ./content/mentorpower-artikelen %>
+    
+    
+    <% if(links.length > 0 ) { %>
+        <% include ./content/mentorpower-artikelen %> 
+    <% } %>
+    
+    
     
     <% include ./content/zakelijke-gegevens %>
     

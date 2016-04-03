@@ -109,11 +109,11 @@ const images = function(res, extra) {
     Image._read({})
         .then(function(result){
             admin_params.images = result;
-            res.render('./admin/images',admin_params.add(extra));
+            res.render('./administration/images',admin_params.add(extra));
         })
         .catch(function(error){
             admin_params['message'] = {type: 'warning', body: 'Error getting all images from database.', icon: 'exclamation-triangle' };
-            res.render('./admin/images',admin_params);
+            res.render('./administration/images',admin_params);
         });
 };
 const imagelist = function(res, extra) {
@@ -121,11 +121,11 @@ const imagelist = function(res, extra) {
     Image._read({})
         .then(function(result){
             admin_params.images = result;
-            res.render('./admin/image_list',admin_params.add(extra));
+            res.render('./administration/image_list',admin_params.add(extra));
         })
         .catch(function(error){
             admin_params['message'] = {type: 'warning', body: 'Error getting all images from database.', icon: 'exclamation-triangle' };
-            res.render('./admin/image_list',admin_params);
+            res.render('./administration/image_list',admin_params);
         });
 
 };
